@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { UserInfoService } from './userinfo.service';
-import { UserModel } from '../model/UserModel';
+import { UserInfoDto } from '../model/UserInfoDto';
+import { UserDto } from '../model/UserDto';
+import { ApiUseTags } from '@nestjs/swagger';
 
+@ApiUseTags('Userinfo')
 @Controller('user')
 export class UserInfoController {
   constructor(private readonly userInfoService: UserInfoService) {}
@@ -11,12 +14,12 @@ export class UserInfoController {
   }
 
   @Post()
-  register(@Body() userInfo: UserModel) {
+  register(@Body() userInfo: UserInfoDto) {
     return this.userInfoService.createUser(userInfo);
   }
 
   @Post('login')
-  login(@Body() userInfo: UserModel) {
+  login(@Body() userInfo: UserDto) {
     return this.userInfoService.login(userInfo);
   }
 }

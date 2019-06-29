@@ -1,9 +1,10 @@
 import { Injectable, Inject, BadRequestException } from '@nestjs/common';
-import { UserModel } from '../model/UserModel';
+import { UserInfoDto } from '../model/UserInfoDto';
 import { Model } from 'mongoose';
 import { User } from '../database/schema/userinfo/userinfo.interface';
 import { USER_MOEDL } from '../constant/constants';
 import { EncrypService } from '../common/encryp.server';
+import { UserDto } from '../model/UserDto';
 
 @Injectable()
 export class UserInfoService {
@@ -12,7 +13,7 @@ export class UserInfoService {
     private readonly encrypt: EncrypService,
   ) {}
 
-  async createUser(userModel: UserModel) {
+  async createUser(userModel: UserInfoDto) {
     const { email } = userModel;
     await this.validateDuplicateEmail(email);
     await this.encryptPasword(userModel);
@@ -23,15 +24,15 @@ export class UserInfoService {
     return this.userDao.find();
   }
 
-  async login(userModel: UserModel) {
+  async login(userModel: UserDto) {
     const { email, password } = userModel;
     const user = await this.userDao.findOne({ email });
     await this.validatePassword(user, password);
     return user;
   }
 
-  private async encryptPasword(userModel: UserModel) {
-    userModel.password = await this.encrypt.hash(userModel.password);
+  private async encryptPasword(user: UserInfoDto) {
+    user.password = await this.encrypt.hash(user.password.toString());
   }
 
   private async validateDuplicateEmail(email: string) {
