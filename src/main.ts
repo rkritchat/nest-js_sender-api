@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('Sender API')
     .setDescription('Sender api')
     .setVersion('1.0')
+    .setSchemes('https', 'http')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
