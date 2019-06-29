@@ -7,12 +7,16 @@ export class UserInfoController {
   constructor(private readonly userInfoService: UserInfoService) {}
   @Get()
   getAllUser() {
-    console.log('come herer');
     return this.userInfoService.getAllUser();
   }
 
   @Post()
   register(@Body() userInfo: UserModel) {
     return this.userInfoService.createUser(userInfo);
+  }
+
+  @Post('login')
+  login(@Body() userInfo: UserModel) {
+    return this.userInfoService.login(userInfo);
   }
 }
